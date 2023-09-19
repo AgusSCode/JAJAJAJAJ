@@ -1,0 +1,158 @@
+package logg;
+
+
+
+
+import javafx.application.Application;
+
+import javafx.collections.FXCollections;
+
+import javafx.collections.ObservableList;
+
+import javafx.scene.Scene;
+
+import javafx.scene.chart.PieChart;
+
+import javafx.scene.layout.StackPane;
+
+import javafx.stage.Stage;
+
+import javafx.scene.control.Tooltip;
+
+
+public class Chart extends Application {
+
+    @Override
+
+    public void start(Stage primaryStage) {
+
+        try {
+
+        	int cantidadlikestotales=0;
+
+            /*ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
+
+            data.add(new PieChart.Data("Georgi", 80));
+
+            data.add(new PieChart.Data("Jorginho", 40));
+
+            data.add(new PieChart.Data("Jorge", 10));     
+
+            data.add(new PieChart.Data("George", 17));*/
+
+            
+
+            int cantidadAutos = InsertarUsuarios.ObtenerCantidadAutos();
+
+            
+
+            ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
+
+            for(int i = 1; i <= cantidadAutos; i++) {
+
+            	
+
+            	int cantidadlikes = InsertarUsuarios.obtenerCantidadLikes(i);
+
+            	cantidadlikestotales = cantidadlikestotales + cantidadlikes;
+
+            	 
+
+            }
+
+            
+
+            		
+
+            for (int i = 1; i <= cantidadAutos; i++) {
+
+            	
+
+            	String nombreautos = InsertarUsuarios.obtenerNombreAuto(i);
+
+            	int cantidadlikes = InsertarUsuarios.obtenerCantidadLikes(i);
+
+            	
+
+            	data.add(new PieChart.Data(nombreautos, ((float) cantidadlikes / cantidadlikestotales) * 100));
+
+
+            }
+
+            
+
+           
+
+
+            
+
+            PieChart pie = new PieChart(data);
+
+            pie.setTitle("Niveles de  \\(^ヮ^)/");
+
+            pie.setLegendVisible(true); 
+
+            pie.setLabelsVisible(true);
+
+            pie.setLabelLineLength(60);
+
+            pie.setLabelsVisible(true);
+
+            pie.getData().forEach(this::installTooltip);
+
+            
+
+            StackPane root = new StackPane(pie);
+
+            Scene scene = new Scene(root, 800, 600);
+
+            
+
+            pie.getData().forEach(this::installTooltip);
+
+            
+
+            primaryStage.setTitle("Gráfico de nuestros autos");
+
+            primaryStage.setScene(scene);
+
+            primaryStage.show();
+
+          
+
+            } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
+
+
+    public static void main(String[] args) {
+
+        launch(args);
+
+    }
+
+    public void installTooltip(PieChart.Data d) {
+
+
+        String msg = String.format("%s : %s", d.getName(), d.getPieValue());
+
+
+        Tooltip tt = new Tooltip(msg);
+
+        tt.setStyle("-fx-background-color: gray; -fx-text-fill: whitesmoke;");
+
+        
+
+        Tooltip.install(d.getNode(), tt);
+
+        
+
+    }
+
+    
+
+}
